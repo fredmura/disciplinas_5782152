@@ -15,7 +15,7 @@ class DisciplinaController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth')->except(['index','show']);
+        $this->middleware('auth')->except(['index','show','search']);
     }
 
     public function index()
@@ -37,6 +37,13 @@ class DisciplinaController extends Controller
     public function createTurma($disciplina_id)
     {
         return view('disciplinas.turmas.create',compact('disciplina_id'));
+    }
+
+    public function search(Request $request)
+    {
+        $text = $request->text;
+        $disciplinas = Disciplina::where('titulo','LIKE',"%{$text}%")->get();
+        return view('disciplinas.index',compact('disciplinas'));
     }
 
     /**
